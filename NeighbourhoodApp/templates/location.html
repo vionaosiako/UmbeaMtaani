@@ -1,0 +1,26 @@
+{%extends 'base.html'%}
+{% block content %}
+{{block.super}}
+
+
+<div class="row mt-5">
+    <div class="col-md-3"></div>
+	<div class="col-md-6">
+		<form class="form-group" method="POST" enctype="multipart/form-data"> 
+			{% csrf_token %} 
+			{{form.as_p}}
+			<button type="submit" class="btn btn-sm bg-info">Submit</button>
+		</form> 
+	</div>
+	<div class="col-md-3"></div>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+<footer class="text-center bg-dark text-white main" style="bottom: 0;">
+    <hr>
+    <p>Made by <strong>TheLioness</strong>&copy; 2022</p>            
+</footer>
+{%endblock%}
