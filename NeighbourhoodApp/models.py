@@ -35,3 +35,38 @@ class Location(models.Model):
     
     def __str__(self):
         return self.name
+    
+class Neighbourhood(models.Model):
+    image=CloudinaryField('image',null=True,blank=True)
+    name = models.CharField(max_length=50)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE,default='Nairobi')
+    occupants_count = models.IntegerField(default=0)
+    police_contact=models.IntegerField(null=True,blank=True)
+    hospital_contact=models.IntegerField(null=True,blank=True)
+    area_admin = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True,blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def create_neigborhood(self):
+        self.save()
+
+    @classmethod
+    def delete_neighbourhood(cls, id):
+        cls.objects.filter(id=id).delete()
+
+    @classmethod
+    def update_neighbourhood(cls, id):
+        cls.objects.filter(id=id).update()
+
+    @classmethod
+    def search_by_name(cls, search_term):
+        hood = cls.objects.filter(name__icontains=search_term)
+        return hood
+
+    # find neighbourhood by id
+    @classmethod
+    def find_neigborhood(cls, id):
+        hood = cls.objects.get(id=id)
+        return hood
+
+    def __str__(self):
+        return self.name

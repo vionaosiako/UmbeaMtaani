@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm,widgets
 from django import forms
-from .models import Profile,Location
+from .models import Profile,Neighbourhood
 from django.contrib.auth.models import User
 from django.core.files.images import get_image_dimensions
 
@@ -20,7 +20,7 @@ class ProfileForm(ModelForm):
             'bio': forms.Textarea(attrs={'class':'form-control'}),
             'phone_number': forms.TextInput(attrs={'class':'form-control'}),
         }
-class LocationForm(ModelForm):
+class NeighbourhoodForm(ModelForm):
     class Meta:
-        model = Location
-        fields = '__all__'
+        model = Neighbourhood
+        exclude = ['admin']

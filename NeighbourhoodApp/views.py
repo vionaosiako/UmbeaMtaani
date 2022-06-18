@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
-from .forms import  CreateUserForm,LocationForm
-from .models import Profile
+from .forms import  CreateUserForm,NeighbourhoodForm
+from .models import Profile,Location,Neighbourhood
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -40,21 +40,41 @@ def logoutUser(request):
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    locations=Location.objects.all()
+    contex={'locations':locations}
+    return render(request, 'index.html',contex)
 
 @login_required(login_url='loginPage')
 def profilePage(request,user_id):
-        profile=Profile.objects.get(id=user_id)
-        contex = {'profile':profile}
-        return render(request, 'profile.html', contex)
+    locations=Location.objects.all()
+    profile=Profile.objects.get(id=user_id)
+    contex = {'profile':profile,'locations':locations}
+    return render(request, 'profile.html', contex)
+
+# @login_required(login_url='loginPage')
+# def location(request):
+#     if request.method == 'POST':
+#         locationform = LocationForm(request.POST,request.FILES)
+#         if  locationform.is_valid:
+#             locationform.save()
+#             return redirect('index')
+#     else:
+#         locationform=LocationForm()
+#     return render(request,'location.html',{'form':locationform})
 
 @login_required(login_url='loginPage')
-def location(request):
-    if request.method == 'POST':
-        locationform = LocationForm(request.POST,request.FILES)
-        if  locationform.is_valid:
-            locationform.save()
+def newHood(request):
+    locations=Location.objects.all()
+    user = Profile.objects.get(user=request.user)
+    if request.method == "POST":
+        form=NeighbourhoodForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.profile = user
+            data.user=request.user.profile
+            data.save()
             return redirect('index')
-    else:
-        locationform=LocationForm()
-    return render(request,'location.html',{'form':locationform})
+        else:
+            form=ProjectForm()
+
+    return render(request, 'AddNeighbourhood.html',{'form':NeighbourhoodForm, 'locations':locations})
