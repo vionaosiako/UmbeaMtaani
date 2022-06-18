@@ -1,0 +1,73 @@
+{%extends 'base.html'%}
+{% block content %}
+{{block.super}}
+
+
+<div class="row mt-5">
+    <div class="col-md-8" style="display: flex; justify-content: center;">
+        <div class="row">
+            {% if profile %}
+                <div class="col-lg-6">
+                    <div class="card">
+                        <img class="card-img-top thumbnail" src="{{ profile.profile_pic.url}}" alt="Card image cap" style="width: 100%; height: 40vh;">
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between;">
+                            <p><b>Username:</b> {{user.username}}</p>
+                            <a href="#" class="btn bg-info">Edit Profile</a>
+                        </div>
+                        
+                        <div>
+                            <p><b>Fullname: </b>{{profile.fullname}}</p>
+                            <p><b>Email Address: </b>{{profile.email}}</p>
+                        </div> 
+                        
+                        <div>                            
+                            <p><b>Hood: </b>{{projects.count}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="projectsAvailable">
+    <h1 class="text-center">Posted by : {{user.username}}</h1>
+    <div class="row">
+        {%for project in projects%}
+        <div class="col-md-4 project">
+            <div class="card mt-2 cardProject" style="width: 100%;">
+                <img src="{{project.image.url}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{project.title}}</h5>
+                    <p class="card-text">{{project.description}}</p>
+                    <p class="card-text"><b>Posted on: </b>{{project.date_posted}}</p>
+                    <div class="styleList">
+                        <ul class="btnProject">
+                            <li><a href="{{project.project_url}}" class="btn btn-info">Project Link</a></li>
+                            <li><a href="#" class="btn btn-info">Project Rating</a></li>
+                        </ul>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {%endfor%}
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+<footer class="text-center bg-dark text-white main" style="bottom: 0;">
+    <hr>
+    <p>Made by <strong>TheLioness</strong>&copy; 2022</p>            
+</footer>
+{%endblock%}
