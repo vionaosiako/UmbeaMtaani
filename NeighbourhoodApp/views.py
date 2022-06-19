@@ -38,7 +38,6 @@ def logoutUser(request):
 	logout(request)
 	return redirect('loginPage')
 
-# Create your views here.
 def index(request):
     locations=Location.objects.all()
     hoods=Neighbourhood.objects.all()
@@ -95,3 +94,8 @@ def newHood(request):
             form=ProjectForm()
 
     return render(request, 'AddNeighbourhood.html',{'form':NeighbourhoodForm, 'locations':locations})
+
+def hood(request):
+    locations=Location.objects.all()
+    contex={'locations':locations}
+    return render(request, 'hood.html',contex)

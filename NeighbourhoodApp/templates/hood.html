@@ -1,0 +1,19 @@
+{%extends 'base.html'%}
+{%load static%}
+{% block content %}
+{{block.super}}
+
+<div class="row m-5">
+    <h1 class="text-center">Welcome to </h1>
+</div>
+<div class="business" style="display: flex; justify-content: space-between;">
+    <h2>Business Available</h2>
+    <a href="#" class="btn btn-outline-success">Add Business</a>
+</div>
+<hr style="height:30px;border-width:0;color:rgb(0, 161, 40);background-color:rgb(15, 146, 47)">
+<div class="Post" style="display: flex; justify-content: space-between;">
+    <h2>Posts Available</h2>
+    <a href="#" class="btn btn-outline-success">Add Post</a>
+</div>
+
+{%endblock%}

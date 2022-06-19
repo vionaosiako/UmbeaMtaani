@@ -17,11 +17,11 @@
         <div class="col-md-4 card hoodInfo">
             <p><b>Hood name: </b> {{hood.name}}</p>
             <p><b>Location: </b> {{hood.location}}</p>
-            <p><b>Hood Population: </b> {{hood.population}}</p>
+            <p><b>Population: </b> {{hood.population}}</p>
             <p><b>Police Contact: </b> {{hood.police_contact}}</p>
             <p><b>Hospital contact: </b> {{hood.hospital_contact}}</p>
             <p><b>Date Created: </b> {{hood.date_created}}</p>
-            <a href="#" class="btn bg-success">Join Hood</a>
+            <a href="{% url 'hood' %}" class="btn bg-success">Join Hood</a>
             
         </div>
         

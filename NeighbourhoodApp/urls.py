@@ -11,4 +11,5 @@ urlpatterns = [
     path('profilePage/<int:user_id>', views.profilePage, name='profilePage'),
     path('profileUpdates', views.profileUpdates, name='profileUpdates'),
     path('Neighbourhood', views.newHood, name='Neighbourhood'),
+    path('hood', views.hood, name='hood'),
 ]
