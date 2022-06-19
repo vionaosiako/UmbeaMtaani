@@ -9,7 +9,7 @@ import datetime as dt
 class Profile(models.Model):
     profile_pic=CloudinaryField('image')
     fullname=models.CharField(max_length=100)
-    email=models.CharField(max_length=100,null=True)
+    email=models.EmailField(max_length=100,null=True)
     user=models.OneToOneField(User,on_delete=models.CASCADE,null=True)
     def __str__(self):
         return self.user.username
@@ -67,5 +67,28 @@ class Neighbourhood(models.Model):
         hood = cls.objects.get(id=id)
         return hood
 
+    def __str__(self):
+        return self.name
+    
+class Business(models.Model):
+    image = CloudinaryField('image')
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=50)
+    description = models.TextField(blank=True, null=True)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    hood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE)
+
+    # create business
+    def create_business(self):
+        self.save()
+
+    # delete business
+    def delete_business(self):
+        self.delete()
+
+    # update business
+    def update_business(self):
+        self.update()
+    
     def __str__(self):
         return self.name
