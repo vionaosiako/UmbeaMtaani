@@ -70,11 +70,15 @@ class Neighbourhood(models.Model):
     def __str__(self):
         return self.name
     
+    class Meta:
+        ordering = ['-date_created']
+    
 class Business(models.Model):
     image = CloudinaryField('image')
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=50)
     description = models.TextField(blank=True, null=True)
+    date_posted = models.DateTimeField(auto_now_add=True, blank=True,null=True)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     hood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE)
 
@@ -92,3 +96,19 @@ class Business(models.Model):
     
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ['-date_posted']
+    
+class Post(models.Model):
+    title = models.CharField(max_length=100)
+    image = CloudinaryField('image')
+    description=models.TextField()
+    date_posted = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='projects')
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        ordering = ['-date_posted']

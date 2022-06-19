@@ -115,3 +115,4 @@ def business(request):
             form=ProjectForm()
     contex={'locations':locations,'form':BusinessForm,}
     return render(request, 'addBusiness.html',contex)
+
