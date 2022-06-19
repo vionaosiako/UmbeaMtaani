@@ -12,4 +12,5 @@ urlpatterns = [
     path('profileUpdates', views.profileUpdates, name='profileUpdates'),
     path('Neighbourhood', views.newHood, name='Neighbourhood'),
     path('hood', views.hood, name='hood'),
+    path('business', views.business, name='business'),
 ]

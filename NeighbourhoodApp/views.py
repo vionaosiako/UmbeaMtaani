@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
-from .forms import  CreateUserForm,NeighbourhoodForm,ProfileForm
+from .forms import  CreateUserForm,NeighbourhoodForm,ProfileForm,BusinessForm
 from .models import Profile,Location,Neighbourhood
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -99,3 +99,19 @@ def hood(request):
     locations=Location.objects.all()
     contex={'locations':locations}
     return render(request, 'hood.html',contex)
+
+def business(request):
+    locations=Location.objects.all()
+    user = Profile.objects.get(user=request.user)
+    if request.method == "POST":
+        form=BusinessForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.profile = user
+            data.user=request.user.profile
+            data.save()
+            return redirect('index')
+        else:
+            form=ProjectForm()
+    contex={'locations':locations,'form':BusinessForm,}
+    return render(request, 'addBusiness.html',contex)
