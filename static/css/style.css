@@ -4,7 +4,7 @@
     font-family: "Trirong", serif;
 }
 body{
-    background-color: #baf5d0;
+    background-color: #8bf8b3;
 }
 
 html, body{
@@ -50,6 +50,9 @@ html, body{
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
     }
 
-    footer{
-        bottom: 0;
-    }
+.hoods{
+    display: flex;
+}
+.hoodInfo{
+    background-color: #b2facd;
+}

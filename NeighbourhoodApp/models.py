@@ -40,7 +40,7 @@ class Neighbourhood(models.Model):
     image=CloudinaryField('image',null=True,blank=True)
     name = models.CharField(max_length=50)
     location = models.ForeignKey(Location, on_delete=models.CASCADE,default='Nairobi')
-    occupants_count = models.IntegerField(default=0)
+    population = models.IntegerField(default=0)
     police_contact=models.IntegerField(null=True,blank=True)
     hospital_contact=models.IntegerField(null=True,blank=True)
     area_admin = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True,blank=True)

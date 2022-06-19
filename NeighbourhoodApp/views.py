@@ -41,7 +41,8 @@ def logoutUser(request):
 # Create your views here.
 def index(request):
     locations=Location.objects.all()
-    contex={'locations':locations}
+    hoods=Neighbourhood.objects.all()
+    contex={'locations':locations, 'hoods':hoods}
     return render(request, 'index.html',contex)
 
 @login_required(login_url='loginPage')

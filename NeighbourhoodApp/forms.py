@@ -23,4 +23,4 @@ class ProfileForm(ModelForm):
 class NeighbourhoodForm(ModelForm):
     class Meta:
         model = Neighbourhood
-        exclude = ['admin']
+        exclude = ['area_admin']
