@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
-from .forms import  CreateUserForm,NeighbourhoodForm
+from .forms import  CreateUserForm,NeighbourhoodForm,ProfileForm
 from .models import Profile,Location,Neighbourhood
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -51,6 +51,22 @@ def profilePage(request,user_id):
     profile=Profile.objects.get(id=user_id)
     contex = {'profile':profile,'locations':locations}
     return render(request, 'profile.html', contex)
+
+@login_required(login_url='loginPage')
+def profileUpdates(request):
+    current_user=request.user
+    profile = Profile.objects.filter(id=current_user.id).first()
+    locations=Location.objects.all()
+    if request.method == 'POST':
+        profileform = ProfileForm(request.POST,request.FILES,instance=profile)
+        if  profileform.is_valid:
+            profileform.save(commit=False)
+            profileform.user=request.user
+            profileform.save()
+            return redirect('index')
+    else:
+        form=ProfileForm(instance=profile)
+    return render(request,'addProfile.html',{'form':form, 'locations':locations})
 
 # @login_required(login_url='loginPage')
 # def location(request):
