@@ -106,6 +106,7 @@ class Post(models.Model):
     description=models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='projects')
+    hood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE,null=True,blank=True)
     
     def __str__(self):
         return self.title

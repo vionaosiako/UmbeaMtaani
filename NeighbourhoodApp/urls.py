@@ -13,4 +13,5 @@ urlpatterns = [
     path('Neighbourhood', views.newHood, name='Neighbourhood'),
     path('hood', views.hood, name='hood'),
     path('business', views.business, name='business'),
+    path('post', views.newPost, name='post'),
 ]

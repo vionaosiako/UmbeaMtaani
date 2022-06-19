@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
-from .forms import  CreateUserForm,NeighbourhoodForm,ProfileForm,BusinessForm
+from .forms import  CreateUserForm,NeighbourhoodForm,ProfileForm,BusinessForm,PostForm
 from .models import Profile,Location,Neighbourhood
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -112,7 +112,23 @@ def business(request):
             data.save()
             return redirect('index')
         else:
-            form=ProjectForm()
+            form=BusinessForm()
     contex={'locations':locations,'form':BusinessForm,}
     return render(request, 'addBusiness.html',contex)
 
+@login_required(login_url='loginPage')
+def newPost(request):
+    locations=Location.objects.all()
+    user = Profile.objects.get(user=request.user)
+    if request.method == "POST":
+        form=PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.profile = user
+            data.user=request.user.profile
+            data.save()
+            return redirect('index')
+        else:
+            form=PostForm()
+
+    return render(request, 'addPost.html',{'locations':locations,'form':PostForm})
