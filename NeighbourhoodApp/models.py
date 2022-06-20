@@ -6,29 +6,6 @@ from django.contrib.auth.models import User
 import datetime as dt
 
 # Create your models here.
-class Profile(models.Model):
-    profile_pic=CloudinaryField('image')
-    fullname=models.CharField(max_length=100)
-    email=models.EmailField(max_length=100,null=True)
-    user=models.OneToOneField(User,on_delete=models.CASCADE,null=True)
-    def __str__(self):
-        return self.user.username
-    
-    @classmethod
-    def search_profile(cls, fullname):
-        return cls.objects.filter(user__username__icontains=fullname).all()
-    
-    @receiver(post_save,sender=User)
-    def createUserProfile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-            
-    @receiver(post_save,sender=User)
-    def saveUserProfile(sender, instance, **kwargs):
-        instance.profile.save()
-    def saveProfile(self):
-        self.user()
-
 class Location(models.Model):
     name = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -42,7 +19,6 @@ class Neighbourhood(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE,default='Nairobi')
     police_contact=models.IntegerField(null=True,blank=True)
     hospital_contact=models.IntegerField(null=True,blank=True)
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True,blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     
 
@@ -73,6 +49,30 @@ class Neighbourhood(models.Model):
     
     class Meta:
         ordering = ['-date_created']
+        
+class Profile(models.Model):
+    profile_pic=CloudinaryField('image')
+    fullname=models.CharField(max_length=100)
+    email=models.EmailField(max_length=100,null=True)
+    user=models.OneToOneField(User,on_delete=models.CASCADE,null=True)
+    hood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE, null=True,blank=True,related_name='neighbor')
+    def __str__(self):
+        return self.user.username
+    
+    @classmethod
+    def search_profile(cls, fullname):
+        return cls.objects.filter(user__username__icontains=fullname).all()
+    
+    @receiver(post_save,sender=User)
+    def createUserProfile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+            
+    @receiver(post_save,sender=User)
+    def saveUserProfile(sender, instance, **kwargs):
+        instance.profile.save()
+    def saveProfile(self):
+        self.user()
     
 class Business(models.Model):
     image = CloudinaryField('image')

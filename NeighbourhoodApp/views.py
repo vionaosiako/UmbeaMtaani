@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
 from .forms import  CreateUserForm,NeighbourhoodForm,ProfileForm,BusinessForm,PostForm
@@ -95,11 +95,23 @@ def newHood(request):
 
     return render(request, 'AddNeighbourhood.html',{'form':NeighbourhoodForm, 'locations':locations})
 
-def hood(request):
-    locations=Location.objects.all()
-    # neighborhoods = Neighbourhood.objects.get(id=neighborhood_id)
-    contex={'locations':locations}
-    return render(request, 'hood.html',contex)
+# def hood(request):
+#     locations=Location.objects.all()
+#     # neighborhoods = Neighbourhood.objects.get(id=neighborhood_id)
+#     contex={'locations':locations}
+#     return render(request, 'hood.html',contex)
+
+def join_hood(request, id):
+    neighbourhood = get_object_or_404(Neighbourhood, id=id)
+    request.user.profile.hood = neighbourhood
+    request.user.profile.save()
+    return redirect('index')
+
+def leave_hood(request, id):
+    hood = get_object_or_404(Neighbourhood, id=id)
+    request.user.profile.hood = None
+    request.user.profile.save()
+    return redirect('index')
 
 def business(request):
     locations=Location.objects.all()
