@@ -4,7 +4,9 @@
 {{block.super}}
 
 <div class="row m-5">
-    <h1 class="text-center">Welcome to </h1>
+    {% for neighborhood in neighborhoods%}
+    <h1 class="text-center">Welcome to {{neighborhood.name}}</h1>
+    {% endfor %}
 </div>
 <div class="business" style="display: flex; justify-content: space-between;">
     <h2>Business Available</h2>

@@ -42,8 +42,9 @@ class Neighbourhood(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE,default='Nairobi')
     police_contact=models.IntegerField(null=True,blank=True)
     hospital_contact=models.IntegerField(null=True,blank=True)
-    area_admin = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True,blank=True)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True,blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
+    
 
     def create_neigborhood(self):
         self.save()

@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
 from .forms import  CreateUserForm,NeighbourhoodForm,ProfileForm,BusinessForm,PostForm
-from .models import Profile,Location,Neighbourhood
+from .models import Profile,Location,Neighbourhood,Business,Post
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -97,6 +97,7 @@ def newHood(request):
 
 def hood(request):
     locations=Location.objects.all()
+    # neighborhoods = Neighbourhood.objects.get(id=neighborhood_id)
     contex={'locations':locations}
     return render(request, 'hood.html',contex)
 
