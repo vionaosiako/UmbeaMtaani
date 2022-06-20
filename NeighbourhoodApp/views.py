@@ -18,7 +18,7 @@ def registerPage(request):
             form.save()
             user = form.cleaned_data.get('username')
             # messages.success(request, 'Account was created for ' + user)
-            return redirect('loginPage')
+            return redirect('profileUpdates')
     return render(request, 'auth/register.html', contex)
 
 def loginPage(request):
@@ -38,6 +38,7 @@ def logoutUser(request):
 	logout(request)
 	return redirect('loginPage')
 
+@login_required(login_url='loginPage')
 def index(request):
     locations=Location.objects.all()
     hoods=Neighbourhood.objects.all()
@@ -95,11 +96,14 @@ def newHood(request):
 
     return render(request, 'AddNeighbourhood.html',{'form':NeighbourhoodForm, 'locations':locations})
 
-# def hood(request):
-#     locations=Location.objects.all()
-#     # neighborhoods = Neighbourhood.objects.get(id=neighborhood_id)
-#     contex={'locations':locations}
-#     return render(request, 'hood.html',contex)
+@login_required(login_url='loginPage')
+def hood(request,hood_id):
+    locations=Location.objects.all()
+    hood = Neighbourhood.objects.get(id=hood_id)
+    business = Business.objects.filter(hood=hood)
+    posts = Post.objects.filter(hood=hood)
+    contex={'locations':locations, 'hood':hood, 'business':business, 'posts':posts}
+    return render(request, 'hood.html',contex)
 
 def join_hood(request, id):
     neighbourhood = get_object_or_404(Neighbourhood, id=id)
@@ -113,35 +117,39 @@ def leave_hood(request, id):
     request.user.profile.save()
     return redirect('index')
 
-def business(request):
-    locations=Location.objects.all()
+@login_required(login_url='loginPage')
+def business(request, hood_id):
     user = Profile.objects.get(user=request.user)
-    if request.method == "POST":
-        form=BusinessForm(request.POST, request.FILES)
+    locations=Location.objects.all()
+    hood = Neighbourhood.objects.get(id=hood_id)
+    if request.method == 'POST':
+        form = BusinessForm(request.POST, request.FILES)
         if form.is_valid():
-            data = form.save(commit=False)
-            data.profile = user
-            data.user=request.user.profile
-            data.save()
-            return redirect('index')
-        else:
-            form=BusinessForm()
+            form = form.save(commit=False)
+            form.hood = hood
+            form.user = request.user.profile
+            form.save()
+            return redirect('hood', hood.id)
+    else:
+        form = BusinessForm()
     contex={'locations':locations,'form':BusinessForm,}
     return render(request, 'addBusiness.html',contex)
 
 @login_required(login_url='loginPage')
-def newPost(request):
-    locations=Location.objects.all()
-    user = Profile.objects.get(user=request.user)
-    if request.method == "POST":
-        form=PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            data = form.save(commit=False)
-            data.profile = user
-            data.user=request.user.profile
-            data.save()
-            return redirect('index')
-        else:
-            form=PostForm()
 
-    return render(request, 'addPost.html',{'locations':locations,'form':PostForm})
+def newPost(request, hood_id):
+    user = Profile.objects.get(user=request.user)
+    locations=Location.objects.all()
+    hood = Neighbourhood.objects.get(id=hood_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.hood = hood
+            form.user = request.user.profile
+            form.save()
+            return redirect('hood', hood.id)
+    else:
+        form = PostForm()
+    contex={'locations':locations,'form':PostForm,}
+    return render(request, 'addPost.html',contex)

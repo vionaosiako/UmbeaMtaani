@@ -11,9 +11,9 @@ urlpatterns = [
     path('profilePage/<int:user_id>', views.profilePage, name='profilePage'),
     path('profileUpdates', views.profileUpdates, name='profileUpdates'),
     path('Neighbourhood', views.newHood, name='Neighbourhood'),
-    # path('hood', views.hood, name='hood'),
-    path('business', views.business, name='business'),
-    path('post', views.newPost, name='post'),
+    path('hood/<hood_id>', views.hood, name='hood'),
+    path('business/<hood_id>', views.business, name='business'),
+    path('post/<hood_id>', views.newPost, name='post'),
     
     path('join_hood/<id>', views.join_hood, name='join-hood'),
     path('leave_hood/<id>', views.leave_hood, name='leave-hood'),

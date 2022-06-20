@@ -3,19 +3,102 @@
 {% block content %}
 {{block.super}}
 
-<div class="row m-5">
-    {% for neighborhood in neighborhoods%}
-    <h1 class="text-center">Welcome to {{neighborhood.name}}</h1>
-    {% endfor %}
-</div>
-<div class="business" style="display: flex; justify-content: space-between;">
-    <h2>Business Available</h2>
-    <a href="{% url 'business' %}" class="btn bg-success text-white">Add Business</a>
-</div>
+{% if profile %}
+<div class="row m-5">    
+    <h1 class="text-center">Welcome to {{profile.hood}}</h1> 
+{% endif %}
+
 <hr style="height:30px;border-width:0;color:rgb(0, 161, 40);background-color:rgb(15, 146, 47)">
-<div class="Post" style="display: flex; justify-content: space-between;">
-    <h2>Posts Available</h2>
-    <a href="{% url 'post' %}" class="btn bg-success text-white">Add Post</a>
+
+<div class="container" style="margin-top:-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="{{ hood.image.url }}" class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <h5 class="card-title tt">{{ hood.name }} ({{hood.location}})
+                            </h5>
+                            <h6 class="card-text">
+                                <span><strong>{{hood.members.count}}</strong> Member{{hood.members.count|pluralize}}</span>
+                                | <strong>{{ hood.business.count }}</strong> Businesses | <strong>
+                                {{ hood.hood_post.count }}</strong> Post{{ hood.hood_post.count|pluralize }}
+                            </h6>
+                            <p class="card-text">{{hood.description}}</p>
+                            <p class="card-text"><span class="text-warning">Police Tell</span>
+                                &nbsp;<strong>{{hood.police_contact}}</strong> |
+                                <span class="text-warning">Hospital Tell</span> <strong>{{hood.hospital_contact}}</strong></p>
+                            <p class="card-text">Administrator: <small class="text-muted">
+                                {{ hood.admin.user.username }}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container bg-white">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="business" style="display: flex; justify-content: space-between;">
+                    <h2>Business Available</h2>
+                    <a href="{% url 'business' hood.id %}" class="btn btn bg-warning text-dark">Add Business</a>
+                </div>
+                <hr>
+                <div class="row">
+                    {% for bus in business %}
+                    <div class="col-md-4">
+                        <div class="card mb-4" style="display: grid;">
+                            <div>
+                                <img src="{{bus.image.url}}" alt="image" width="100%" height="400px">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{bus.name}}
+                                </h5>
+                                <p class="card-text">{{bus.email}}</p>
+                                <p class="card-text">{{bus.description}}</p>
+                                <p class="card-text">Owner: <small class="text-muted">
+                                    {{ bus.user.user.username|title }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <hr>
+                <div class="Post mt-2" style="display: flex; justify-content: space-between;">
+                    <h2>Posts Available</h2>
+                    <a href="{% url 'post' hood.id %}" class="btn bg-warning text-dark">Add Post</a>
+                </div>
+                <div class="row">
+                    {% for post in posts %}
+                    <div class="col-md-4" style="display: grid;">
+                        <div>
+                            <img src="{{post.image.url}}" alt="image" width="100%" height="400px">
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">{{post.title}}</h5>
+                                <p class="card-text">" {{post.post}} "
+                                </p>
+                                <p class="card-text">By: <small class="">
+                                    {{ post.user.user.username|title }}</small> <small style="float:right">{{post.date|date}}</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <hr>
+
+            </div>
+        </div>
+    </div>
+
 </div>
+
 
 {%endblock%}

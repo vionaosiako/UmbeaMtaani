@@ -81,7 +81,7 @@ class Business(models.Model):
     description = models.TextField(blank=True, null=True)
     date_posted = models.DateTimeField(auto_now_add=True, blank=True,null=True)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    hood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE)
+    hood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE,related_name='business')
 
     # create business
     def create_business(self):
@@ -106,8 +106,8 @@ class Post(models.Model):
     image = CloudinaryField('image')
     description=models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='projects')
-    hood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE,null=True,blank=True)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    hood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE,null=True,blank=True,related_name='post')
     
     def __str__(self):
         return self.title
