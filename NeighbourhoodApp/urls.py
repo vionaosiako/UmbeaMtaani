@@ -14,7 +14,7 @@ urlpatterns = [
     path('hood/<hood_id>', views.hood, name='hood'),
     path('business/<hood_id>', views.business, name='business'),
     path('post/<hood_id>', views.newPost, name='post'),
-    
+    path('search/', views.search_business, name='search'),
     path('join_hood/<id>', views.join_hood, name='join-hood'),
     path('leave_hood/<id>', views.leave_hood, name='leave-hood'),
 ]

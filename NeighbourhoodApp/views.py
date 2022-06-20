@@ -153,3 +153,21 @@ def newPost(request, hood_id):
         form = PostForm()
     contex={'locations':locations,'form':PostForm,}
     return render(request, 'addPost.html',contex)
+
+@login_required(login_url='login')
+def search_business(request):
+    locations=Location.objects.all()
+    if request.method == 'GET':
+        name = request.GET.get("name")
+        results = Business.objects.filter(name__icontains=name).all()
+        print(results)
+        message = f'name'
+        context = {
+            'results': results,
+            'message': message
+        }
+        return render(request, 'results.html', context)
+    else:
+        message = "You haven't searched for any Business in the hood"
+    contex={'locations':locations}
+    return render(request, "results.html")
