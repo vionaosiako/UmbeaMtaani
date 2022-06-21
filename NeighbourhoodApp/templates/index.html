@@ -4,23 +4,25 @@
 {{block.super}}
 <div class="row">
     <div class="banner">
-
+        <div class="container mt-5">
+            <div>
+                {% if user.profile.hood %}
+                <div class="text-center">
+                    <h1>Welcome Back to UmbeaMtaani</h1>
+                    <h5>See Whats has been Happening in your hood {{user.profile.neighbourhood.name}}</h5>
+                    <a href="{% url 'hood' user.profile.hood.id %}" class="btn btn-sm btn-warning mt-4">What's Happening</a>
+                </div>
+            {% else %}
+                <div class="text-center">
+                    <h1>Welcome to UmbeaMtaani</h1>
+                    <h5>Get Started by joining a hood today to view what's happening around you</h5>
+                </div>
+            {% endif %}
+            </div>
+        </div>
     </div>
 
-    <div class="container mt-5" >
-        {% if user.profile.hood %}
-            <div class="text-center">
-                <h1>Welcome Back to UmbeaMtaani</h1>
-                <h5>See Whats has been Happening in your hood {{user.profile.neighbourhood.name}}</h5>
-                <a href="{% url 'hood' user.profile.hood.id %}" class="btn btn-sm btn-warning mt-4">What's Happening</a>
-            </div>
-        {% else %}
-            <div class="text-center">
-                <h1>Welcome to UmbeaMtaani</h1>
-                <h5>Get Started by joining a hood today to view what's happening around you</h5>
-            </div>
-        {% endif %}
-    </div>
+    
 <div class="row">
     <h1 class="text-center">Availables Hoods</h1>
     {% for hood in hoods %}
